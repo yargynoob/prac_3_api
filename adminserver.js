@@ -14,6 +14,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const fs = require('fs')
 
+// Swagger документация
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -28,7 +29,7 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ['openapi.yaml'], // укажите путь к файлам с аннотациями
+    apis: ['openapi.yaml'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -147,14 +148,13 @@ app.put('/categories/:id', (req, res) => {
     });
 });
 
-// Удалить объект по ID
 app.delete('/products/:id', (req, res) => {
     const productId = parseInt(req.params.id);
     fs.readFile('./data.json', 'utf-8', function(err, data) {
         if (err) throw err
 
         let jsonData = JSON.parse(data);
-        jsonData.products = jsonData.products.filter(t => parseInt(t.id) !== productId);
+        jsonData.products = jsonData.products.filter(t => t.id !== productId);
         fs.writeFile('./data.json', JSON.stringify(jsonData), 'utf-8', function(err) {
             if (err) throw err;
         });
